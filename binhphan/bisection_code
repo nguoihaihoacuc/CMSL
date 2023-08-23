@@ -1,1 +1,22 @@
+#vi du f = x^2 +5x -6
+def f(x):
+  return x**2 + 5*x - 6
+x1 = float(input("enter x1"))
+x2 = float(input("enter x2"))
 
+error = 0.000001
+
+temp = (x2 + x1) / 2
+dx = abs(x2 - x1)
+if (f(x1)*f(x2) > 0):
+  print("no root")
+else:
+  while(dx >= error):
+    if (f(x1)*f(temp)) < 0:
+      x2 = temp
+      temp = (x2 + x1) / 2
+    elif (f(x2)*f(temp)) < 0:
+      x1 = temp
+      temp = (x2 + x1) / 2
+    dx = abs(x2 -x1)
+  print(temp)
