@@ -1,52 +1,33 @@
-##**m = tanh(mT)**
-
 #define g(m) = m - tanh(mT)
 import numpy as np
+z=4
 def g(m, T):
-  return m - np.tanh(m*T)
+  return (m - np.tanh(z*m/T))
 
+#define bisection function
+def bisection(T, m1, m2, Tlist, mlist):
+  epsilon = 1e-10
+  if (g(m1, T) * g(m2, T)) >0:
+    print("no root")
+    return
+  while((m2 - m1) >= epsilon):
+    mid = (m1 + m2) / 2
+    if (g(m1, T)*g(mid, T)) < 0:
+      m2 = mid
+    if (g(m2, T)*g(mid, T)) < 0:
+      m1 = mid
+  Tlist.append(T)
+  mlist.append(mid)
 
-#ve do thi
-import numpy as np
-from matplotlib import pyplot as plt
+#use bisection function with T in (0.001, 4)
+Tlist = []
+mlist = []
+T = np.linspace(0.001, 4, 10000)
+for i in T:
+  bisection(i, 0.001, 1.00001, Tlist, mlist)
 
-plt.rcParams["figure.figsize"] = [7.50, 4.50]
-plt.rcParams["figure.autolayout"] = True
-
-x = np.linspace(0, 2, 100)
-I = np.linspace(0, 1, 10)
-y = np.zeros(1000)
-
-plt.plot(x, g(x, 20), color="red")
-plt.plot(x, y, linestyle="dashed")
-plt.xlabel("m")
-plt.ylabel("m - tanh(mT)")
+#draw m depends on T
+plt.plot(Tlist, mlist)
+plt.xlabel("T")
+plt.ylabel("m")
 plt.show()
-
-
-
-
-x1 = float(input("enter x1"))
-x2 = float(input("enter x2"))
-
-error = 0.00001
-temp = (x2 + x1) / 2
-dx = abs(x2 - x1)
-for i in I:
-if (g(x1, 20)*g(x2, 20) > 0):
-  print("no root")
-elif g(temp, 20) == 0:
-  print("root = ", temp)
-else:
-  while(dx >= error):
-    if (g(x1, 20)*g(temp, 20)) < 0:
-      x2 = temp
-      temp = (x2 + x1) / 2
-    elif (g(x2, 20)*g(temp, 20)) < 0:
-      x1 = temp
-      temp = (x2 + x1) / 2
-    dx = abs(x2 -x1)
-  print("root = ", temp)
-
-
-
